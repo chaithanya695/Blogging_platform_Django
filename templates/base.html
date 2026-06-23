@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog Platform</title>
+
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+
+            <!-- Brand -->
+            <a class="navbar-brand" href="{% url 'blog:post_list' %}">
+                Blog Platform
+            </a>
+
+            <div>
+
+                {% if user.is_authenticated %}
+
+                <!-- Username -->
+                <span class="badge bg-primary fs-6 me-3">
+                    {{ user.username }}
+                </span>
+
+
+
+                <!-- Create Post -->
+                <a href="{% url 'blog:create_post' %}" class="btn btn-success btn-sm">
+                    Create Post
+                </a>
+                <a href="{% url 'blog:my_posts' %}" class="btn btn-info btn-sm">
+                    My Posts
+                </a>
+
+                <a href="{% url 'blog:dashboard' %}" class="btn btn-info btn-sm">
+                    Dashboard
+                </a>
+
+
+                <!-- Logout -->
+                <a href="{% url 'accounts:logout' %}" class="btn btn-danger btn-sm">
+                    Logout
+                </a>
+
+                {% else %}
+
+                <!-- Login -->
+                <a href="{% url 'accounts:login' %}" class="btn btn-primary btn-sm">
+                    Login
+                </a>
+                &nbsp;&nbsp;
+                <!-- Register -->
+                <a href="{% url 'accounts:register' %}" class="btn btn-warning btn-sm">
+                    Register
+                </a>
+
+                {% endif %}
+
+            </div>
+
+        </div>
+    </nav>
+
+    <div class="container mt-4">
+
+        {% block content %}
+        {% endblock %}
+
+    </div>
+
+</body>
+
+</html>

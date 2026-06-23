@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<link rel="stylesheet" href="{% static 'css/post_list.css' %}">
+
+<div class="d-flex justify-content-between align-items-center mb-4">
+
+    <h1 class="fw-bold">All Blog Posts</h1>
+
+    <form method="GET" class="d-flex">
+        <input type="text" name="q" class="form-control me-2" placeholder="Search posts..." value="{{ query }}">
+
+        <button class="btn btn-outline-primary">
+            Search
+        </button>
+    </form>
+
+</div>
+
+{% for post in posts %}
+
+<div class="card shadow-sm mb-4 border-0 post-card">
+
+    {% if post.cover_image %}
+    <img src="{{ post.cover_image.url }}" class="card-img-top" alt="{{ post.title }}"
+        style="height:250px; object-fit:cover;">
+    {% endif %}
+
+    <div class="card-body">
+
+        <div class="d-flex justify-content-between align-items-center mb-2">
+
+            <h4 class="card-title mb-0">
+                {{ post.title }}
+            </h4>
+
+            <span class="badge bg-secondary">
+                {{ post.created_at|date:"d M Y" }}
+            </span>
+
+        </div>
+
+        <p class="text-muted mb-2">
+            By
+            <a href="{% url 'accounts:profile' post.author.username %}" class="text-decoration-none">
+                {{ post.author.username }}
+            </a>
+        </p>
+
+        <p class="mb-2">
+            <span class="badge bg-info text-dark">
+                {{ post.category }}
+            </span>
+        </p>
+
+        <p class="text-muted">
+            ❤️ {{ post.likes.count }} Likes
+        </p>
+
+        <p class="card-text">
+            {{ post.content|truncatewords:25 }}
+        </p>
+
+        <a href="{% url 'blog:post_detail' post.id %}" class="btn btn-primary btn-sm">
+            Read More →
+        </a>
+
+    </div>
+
+</div>
+
+{% empty %}
+
+<div class="alert alert-info text-center">
+    No posts found.
+</div>
+
+{% endfor %}
+
+<div class="d-flex justify-content-center mt-4">
+
+    {% if posts.has_previous %}
+    <a class="btn btn-outline-primary me-2" href="?q={{ query }}&page={{ posts.previous_page_number }}">
+        Previous
+    </a>
+    {% endif %}
+
+    <span class="align-self-center mx-3">
+        Page {{ posts.number }} of {{ posts.paginator.num_pages }}
+    </span>
+
+    {% if posts.has_next %}
+    <a class="btn btn-outline-primary ms-2" href="?q={{ query }}&page={{ posts.next_page_number }}">
+        Next
+    </a>
+    {% endif %}
+
+</div>
+
+{% endblock %}
