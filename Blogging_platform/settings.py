@@ -1,12 +1,18 @@
 import os
 from pathlib import Path
 from dotenv import load_dotenv
+import cloudinary
 
 # ---------------- BASE ----------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR / 'templates'
 
 load_dotenv()
+cloudinary.config(
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
+)
 
 # ---------------- SECURITY ----------------
 SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-key-not-for-production')
@@ -38,6 +44,8 @@ INSTALLED_APPS = [
     # local apps
     'accounts',
     'blog',
+    'cloudinary',
+    'cloudinary_storage',
 ]
 
 # ---------------- MIDDLEWARE ----------------
@@ -107,9 +115,7 @@ STATICFILES_DIRS = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ---------------- MEDIA FILES ----------------
-MEDIA_URL = '/media/'
-MEDIA_ROOT = BASE_DIR / 'media'
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 # ---------------- DEFAULT PRIMARY KEY ----------------
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
