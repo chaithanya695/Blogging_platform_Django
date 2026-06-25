@@ -2,17 +2,29 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 
+# ---------------- BASE ----------------
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR / 'templates'
 
 load_dotenv()
 
 # ---------------- SECURITY ----------------
-SECRET_KEY = os.getenv('SECRET_KEY','fallback-key-not-for-production')
+SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-key-not-for-production')
 
-DEBUG = os.getenv('DEBUG','False').lower() == 'true'
+DEBUG = os.getenv('DEBUG', 'False').lower() == 'true'
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost','.onrender.com']
+ALLOWED_HOSTS = [
+    '127.0.0.1',
+    'localhost',
+]
+
+# add production host only when DEBUG is False
+if not DEBUG:
+    ALLOWED_HOSTS += ['.onrender.com']
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.onrender.com"
+] if not DEBUG else []
 
 # ---------------- APPS ----------------
 INSTALLED_APPS = [
@@ -22,6 +34,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # local apps
     'accounts',
     'blog',
 ]
@@ -93,7 +107,7 @@ STATICFILES_DIRS = [
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
-# ---------------- MEDIA ----------------
+# ---------------- MEDIA FILES ----------------
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 
@@ -101,15 +115,14 @@ MEDIA_ROOT = BASE_DIR / 'media'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # ---------------- AUTH ----------------
-LOGIN_URL = '/login/'
+LOGIN_URL = '/accounts/login/'
+LOGIN_REDIRECT_URL = 'blog:post_list'
+LOGOUT_REDIRECT_URL = 'blog:post_list'
 
 # ---------------- EMAIL (DEV ONLY) ----------------
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-# # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = 'django-insecure-$d3x)-o2o9qtwxd@$rqp98pez+$+8(j-nwn#f$=@42qm#qkig_'
-
-# # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
-
-# ALLOWED_HOSTS = []
+# ---------------- SECURITY HEADERS (PROD ONLY) ----------------
+if not DEBUG:
+    SECURE_BROWSER_XSS_FILTER = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True

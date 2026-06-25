@@ -7,13 +7,13 @@
 <link rel="stylesheet"
       href="{% static 'css/auth.css' %}">
 
-<div class="auth-card">
+<div class="auth-card" style="background-color: rgba(245, 245, 220, 0.71);">
 
     <h2 class="auth-heading">
         Create Account
     </h2>
 
-    <form method="POST">
+    <form method="POST" autocomplete="off">
 
         {% csrf_token %}
 

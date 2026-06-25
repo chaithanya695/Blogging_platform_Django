@@ -2,16 +2,30 @@
 
 {% load static %}
 
+{% block navbar %}
+{% endblock %}
+
 {% block content %}
 
-<link rel="stylesheet"
-      href="{% static 'css/form.css' %}">
+<!-- HOME BUTTON -->
+<!-- <div class="mb-3">
+    <a href="{% url 'blog:post_list' %}" class="btn btn-dark">
+        ⬅ Home
+    </a>
+</div> -->
 
-<div class="form-card">
+<link rel="stylesheet" href="{% static 'css/form.css' %}">
 
-    <h2 class="form-heading">
-        Create New Blog Post
-    </h2>
+<div class="form-card" style="background-color: rgba(250, 235, 215, 0.718);">
+
+    <h1 class="form-heading">
+        ✍️ Create New Blog Post
+    </h1>
+
+    <p class="form-subtitle" style="text-align: left;">
+        Share your ideas, stories, and knowledge with the community.
+    </p>
+    
 
     <form method="POST" enctype="multipart/form-data">
 
@@ -19,15 +33,17 @@
 
         {{ form.as_p }}
 
-        <button type="submit"
-                class="btn btn-success">
-            Publish Post
-        </button>
+        <div class="form-actions">
 
-        <a href="/"
-           class="btn btn-secondary">
-            Cancel
-        </a>
+            <button type="submit" class="btn submit-btn">
+                🚀 Publish Post
+            </button>
+
+            <a href="{% url 'blog:post_list' %}" class="btn btn-warning" style="text-align: center;">
+               ❌ Cancel
+            </a>
+
+        </div>
 
     </form>
 

@@ -56,7 +56,8 @@ def user_logout(request):
 
 def profile_view(request, username):
     user_obj = get_object_or_404(User, username=username)
-    profile = get_object_or_404(Profile, user=user_obj)
+
+    profile, created = Profile.objects.get_or_create(user=user_obj)
 
     posts = Post.objects.filter(author=user_obj)
 

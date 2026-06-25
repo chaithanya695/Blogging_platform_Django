@@ -53,6 +53,7 @@ def create_post(request):
             post=form.save(commit=False)
             post.author=request.user 
             post.save()
+            
             return redirect('blog:post_list')
     else:
         form =PostForm()

@@ -1,35 +1,51 @@
 {% extends 'base.html' %}
 
+{% block navbar %}
+{% endblock %}
+
 {% block content %}
 
-<h1 class="fw-bold mb-4">
-    Dashboard
+<!-- HOME BUTTON -->
+<div class="mb-3">
+    <a href="{% url 'blog:post_list' %}" class="btn btn-dark">
+        ⬅ Home
+    </a>
+</div>
+
+<h1 class="dashboard-heading">
+    Dashboard Analytics
 </h1>
 
 <div class="row">
 
     <div class="col-md-4">
-        <div class="card text-center shadow-sm mb-3">
+        <div class="stats-card">
             <div class="card-body">
-                <h2>{{ total_posts }}</h2>
+                <div class="dashboard-number">
+                    {{ total_posts }}
+                </div>
                 <p>Total Posts</p>
             </div>
         </div>
     </div>
 
     <div class="col-md-4">
-        <div class="card text-center shadow-sm mb-3">
+        <div class="stats-card">
             <div class="card-body">
-                <h2>{{ total_likes }}</h2>
+                <div class="dashboard-number">
+                    {{ total_likes }}
+                </div>
                 <p>Total Likes</p>
             </div>
         </div>
     </div>
 
     <div class="col-md-4">
-        <div class="card text-center shadow-sm mb-3">
+        <div class="stats-card">
             <div class="card-body">
-                <h2>{{ total_comments }}</h2>
+                <div class="dashboard-number">
+                    {{ total_comments }}
+                </div>
                 <p>Total Comments</p>
             </div>
         </div>
@@ -37,28 +53,18 @@
 
 </div>
 
-<h3 class="mt-4">
-    Recent Posts
-</h3>
+<h3 class="section-title">Recent Posts</h3>
 
 {% for post in recent_posts %}
-
-<div class="card mb-2">
-
+<div class="recent-post-card">
     <div class="card-body">
-
         <a href="{% url 'blog:post_detail' post.id %}">
             {{ post.title }}
         </a>
-
     </div>
-
 </div>
-
 {% empty %}
-
 <p>No posts yet.</p>
-
 {% endfor %}
 
 {% endblock %}
