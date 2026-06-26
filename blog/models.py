@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from cloudinary.models import CloudinaryField
 
 # creating a class for post 
 
@@ -22,13 +23,14 @@ class Post(models.Model):
         null=True,
         blank=True
     )
-    cover_image = models.ImageField(
-    upload_to='post_images/',
-    blank=True,
-    null=True
+    cover_image = CloudinaryField(
+        "image",
+        blank=True,
+        null=True
     )
-    second_image = models.ImageField(
-        upload_to='post_images/',
+
+    second_image = CloudinaryField(
+        "image",
         blank=True,
         null=True
     )
