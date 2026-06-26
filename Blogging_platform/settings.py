@@ -7,12 +7,21 @@ import cloudinary
 BASE_DIR = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = BASE_DIR / 'templates'
 
-load_dotenv()
+load_dotenv(BASE_DIR / ".env")
+
 cloudinary.config(
-    cloud_name=os.getenv("dhmlt6pjy"),
-    api_key=os.getenv("293451376418644"),
-    api_secret=os.getenv("rGZMZ_vWQpWH7qg-iuMdDmOOW60"),
+    cloud_name=os.getenv("CLOUDINARY_CLOUD_NAME"),
+    api_key=os.getenv("CLOUDINARY_API_KEY"),
+    api_secret=os.getenv("CLOUDINARY_API_SECRET"),
 )
+
+CLOUDINARY_STORAGE = {
+    "CLOUD_NAME": os.getenv("CLOUDINARY_CLOUD_NAME"),
+    "API_KEY": os.getenv("CLOUDINARY_API_KEY"),
+    "API_SECRET": os.getenv("CLOUDINARY_API_SECRET"),
+}
+
+DEFAULT_FILE_STORAGE = "cloudinary_storage.storage.MediaCloudinaryStorage"
 
 # ---------------- SECURITY ----------------
 SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-key-not-for-production')
